@@ -6,9 +6,9 @@ package com.pochih.currencycalculator.entity;
 
 public class Currency {
     private String code;
-    private String countryName;
+    private String country;
     private String name;
-    private String imgUrl;
+    private String flagPath;
     private double rate;
 
     public String getCode() {
@@ -19,12 +19,12 @@ public class Currency {
         this.code = code;
     }
 
-    public String getCountryName() {
-        return countryName;
+    public String getCountry() {
+        return country;
     }
 
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getName() {
@@ -35,12 +35,12 @@ public class Currency {
         this.name = name;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getFlagPath() {
+        return flagPath;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setFlagPath(String flagPath) {
+        this.flagPath = flagPath;
     }
 
     public double getRate() {
