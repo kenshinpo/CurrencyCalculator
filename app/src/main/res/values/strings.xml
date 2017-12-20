@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">CurrencyCalculator</string>
+    <string name="app_name">Currency</string>
+
+    <string name="text_I_have">I have</string>
+    <string name="text_I_want">I want</string>
+    <string name="text_Amount">Amount</string>
+    <string name="text_Loading">Loading</string>
+    <string name="text_Wait_while_loading">Wait while loading...</string>
 </resources>

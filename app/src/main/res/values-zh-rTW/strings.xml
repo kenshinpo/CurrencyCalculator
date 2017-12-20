@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_I_have">我有</string>
+    <string name="text_I_want">我想要</string>
+    <string name="text_Amount">金額</string>
+    <string name="text_Loading">讀取中</string>
+    <string name="text_Wait_while_loading">等待讀取中</string>
+</resources>
