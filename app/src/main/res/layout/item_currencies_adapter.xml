@@ -1,6 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="25dp"
+    android:layout_marginLeft="25dp"
+    android:layout_marginRight="25dp"
+    android:layout_marginStart="25dp"
+    android:layout_marginTop="10dp">
 
+    <LinearLayout
+        android:id="@+id/llBaseCurrency"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_item_currency"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civBaseCurrencyFlag"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/us"
+            app:civ_border_color="@color/colorGray"
+            app:civ_border_width="1dp" />
+
+        <TextView
+            android:id="@+id/tvCurrencyCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginStart="10dp"
+            android:text="AED"
+            android:textColor="#445462"
+            android:textSize="17sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:textColor="#445462"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/tvCurrencyName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:text="UAE Dirham"
+            android:textColor="#445462"
+            android:textSize="17sp" />
+
+        <ImageButton
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_arrow_right" />
+
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -22,7 +22,6 @@ import java.text.DecimalFormat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnTextChanged;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -132,22 +131,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             //endregion
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
+    }
 
-
-//            Call<List<Currency>> call = currencyService.getCurrency();
-//            call.enqueue(new Callback<List<Currency>>() {
-//                @Override
-//                public void onResponse(Call<List<Currency>> call, Response<List<Currency>> response) {
-//                    Log.i(TAG, "成功");
-//                    Log.i(TAG, "response.size: " + response.body().size());
-//                }
-//
-//                @Override
-//                public void onFailure(Call<List<Currency>> call, Throwable t) {
-//                    Log.e(TAG, t.getMessage());
-//                }
-//            });
-
+    @Override
+    protected void onResume() {
+        try {
+            super.onResume();
+            //region Http API call
             mDialog.show();
             Call<Exchange> call = AppApplication.currencyService.getExchange(AppApplication.instance.getBaseCode(), AppApplication.instance.getTargetCode());
             call.enqueue(new Callback<Exchange>() {
@@ -158,11 +151,12 @@ public class MainActivity extends AppCompatActivity {
                     rateBaseToTarget = result.getRate();
                     tvBaseCurrencyCode.setText(result.getBaseCode().toUpperCase());
                     tvBaseToTarget.setText("1 " + result.getBaseCode().toUpperCase() + " = " + rateBaseToTarget + " " + result.getTargetCode().toUpperCase());
+                    ///Picasso.with(getApplicationContext()).load(AppApplication.instance.getBaseUrl() + ).into(civBaseCurrencyFlag);
 
                     tvTargetCurrencyCode.setText(result.getTargetCode().toUpperCase());
                     rateTargetToBase = 1 / result.getRate();
-
                     tvTargetToBase.setText("1 " + result.getTargetCode().toUpperCase() + " = " + df.format(rateTargetToBase) + " " + result.getBaseCode().toUpperCase());
+                    //Picasso.with(getApplicationContext()).load(AppApplication.instance.getBaseUrl() + ).into(civTargetCurrencyFlag);
 
                     mDialog.dismiss();
                 }
@@ -173,8 +167,8 @@ public class MainActivity extends AppCompatActivity {
                     mDialog.dismiss();
                 }
             });
+            //endregion
         } catch (Exception e) {
-            e.printStackTrace();
             Log.e(TAG, e.toString());
         }
     }
@@ -182,14 +176,16 @@ public class MainActivity extends AppCompatActivity {
     @OnClick({R.id.llBaseCurrency, R.id.llTargetCurrency, R.id.etBaseCurrencyAmount, R.id.etTargetCurrencyAmount})
     public void onViewClicked(View view) {
 
-        Intent i = new Intent(MainActivity.this, ChangeCurrencyActivity.class);
+        Intent intent = new Intent(MainActivity.this, ChangeCurrencyActivity.class);
 
         switch (view.getId()) {
             case R.id.llBaseCurrency:
-                startActivity(i);
+                intent.putExtra("selectType", ChangeCurrencyActivity.SELECT_TYPE_BASE_CURRENCY);
+                startActivity(intent);
                 break;
             case R.id.llTargetCurrency:
-                startActivity(i);
+                intent.putExtra("selectType", ChangeCurrencyActivity.SELECT_TYPE_TARGET_CURRENCY);
+                startActivity(intent);
                 break;
 
             case R.id.etBaseCurrencyAmount:

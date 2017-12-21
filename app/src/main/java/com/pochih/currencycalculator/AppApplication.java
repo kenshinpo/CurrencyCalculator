@@ -35,16 +35,13 @@ public class AppApplication extends Application {
             //region Step 1. Initial settings
             instance = this;
             setBaseUrl(DEFAULT_BASE_URL);
-            setBaseCode(DEFAULT_BASE_CODE);
-            setTargetCode(DEFAULT_TARGET_CODE);
             //endregion
 
-            //region Step 2. Initial Http call
+            //region Step 2. Initial Http call setting
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(AppApplication.instance.getBaseUrl())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-
             currencyService = retrofit.create(ICurrencyService.class);
             //endregion
 
