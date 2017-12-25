@@ -3,6 +3,7 @@ package com.pochih.currencycalculator.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -157,46 +158,41 @@ public class MainActivity extends AppCompatActivity {
             //region Http API call
             mDialog.show();
 
-            if (AppApplication.instance.isInitial()) {
-                //region Init image cache
-                Call<List<Currency>> call = AppApplication.currencyService.getCurrency();
-                call.enqueue(new Callback<List<Currency>>() {
+            //region Init image cache
+            Call<List<Currency>> call = AppApplication.currencyService.getCurrency();
+            call.enqueue(new Callback<List<Currency>>() {
 
-                    @Override
-                    public void onResponse(Call<List<Currency>> call, Response<List<Currency>> response) {
-                        final List<Currency> currencies = response.body();
-                        for (int i = 0; i < currencies.size(); i++) {
-                            final String key = currencies.get(i).getCode().toLowerCase();
-                            final String url = AppApplication.instance.getBaseUrl() + currencies.get(i).getFlagPath();
-                            if (AppApplication.instance.getCacheImg(key) == null) {
-//                                bmp = ImageHelper.decodeBitmap(AppApplication.instance.getBaseUrl() + currencies.get(i).getFlagPath(), 200);
-//                                AppApplication.instance.putCacheImg(key, bmp);
+                @Override
+                public void onResponse(Call<List<Currency>> call, Response<List<Currency>> response) {
+                    final List<Currency> currencies = response.body();
+                    for (int i = 0; i < currencies.size(); i++) {
+                        final String key = currencies.get(i).getCode().toLowerCase();
+                        final String url = AppApplication.instance.getBaseUrl() + currencies.get(i).getFlagPath();
+                        if (AppApplication.instance.getCacheImg(key) == null) {
+                            new ImageDownloadAnsyTask().execute(url, key);
 
-                                mHandler.post(new Runnable() {
-                                    Bitmap bmp;
+                        } else {
+                            // Setup base flag image
+                            if (currencies.get(i).getCode().toLowerCase().equals(AppApplication.instance.getBaseCode().toLowerCase())) {
+                                civBaseCurrencyFlag.setImageBitmap(AppApplication.instance.getCacheImg(AppApplication.instance.getBaseCode().toLowerCase()));
+                            }
 
-                                    @Override
-                                    public void run() {
-                                        bmp = ImageHelper.decodeBitmap(url, 200);
-                                        AppApplication.instance.putCacheImg(key, bmp);
-                                    }
-                                });
+                            // Setup target flag image
+                            if (currencies.get(i).getCode().toLowerCase().equals(AppApplication.instance.getTargetCode().toLowerCase())) {
+                                civTargetCurrencyFlag.setImageBitmap(AppApplication.instance.getCacheImg(AppApplication.instance.getTargetCode().toLowerCase()));
                             }
                         }
-                        getExchange();
                     }
+                    getExchange();
+                }
 
-                    @Override
-                    public void onFailure(Call<List<Currency>> call, Throwable t) {
-                        Log.e(TAG, t.getMessage());
+                @Override
+                public void onFailure(Call<List<Currency>> call, Throwable t) {
+                    Log.e(TAG, t.getMessage());
 
-                    }
-                });
-                //endregion
-            } else {
-                getExchange();
-            }
-
+                }
+            });
+            //endregion
 
             //endregion
         } catch (Exception e) {
@@ -211,11 +207,11 @@ public class MainActivity extends AppCompatActivity {
 
         switch (view.getId()) {
             case R.id.llBaseCurrency:
-                intent.putExtra("selectType", ChangeCurrencyActivity.SELECT_TYPE_BASE_CURRENCY);
+                intent.putExtra(ChangeCurrencyActivity.INTENT_EXTRA_SELECT_TYPE, ChangeCurrencyActivity.SELECT_TYPE_BASE_CURRENCY);
                 startActivity(intent);
                 break;
             case R.id.llTargetCurrency:
-                intent.putExtra("selectType", ChangeCurrencyActivity.SELECT_TYPE_TARGET_CURRENCY);
+                intent.putExtra(ChangeCurrencyActivity.INTENT_EXTRA_SELECT_TYPE, ChangeCurrencyActivity.SELECT_TYPE_TARGET_CURRENCY);
                 startActivity(intent);
                 break;
 
@@ -238,13 +234,12 @@ public class MainActivity extends AppCompatActivity {
                     rateBaseToTarget = result.getRate();
                     tvBaseCurrencyCode.setText(result.getBaseCode().toUpperCase());
                     tvBaseToTarget.setText("1 " + result.getBaseCode().toUpperCase() + " = " + rateBaseToTarget + " " + result.getTargetCode().toUpperCase());
-                    civBaseCurrencyFlag.setImageBitmap(AppApplication.instance.getCacheImg(result.getBaseCode().toLowerCase()));
+                    etBaseCurrencyAmount.setText("");
 
                     tvTargetCurrencyCode.setText(result.getTargetCode().toUpperCase());
                     rateTargetToBase = 1 / result.getRate();
                     tvTargetToBase.setText("1 " + result.getTargetCode().toUpperCase() + " = " + df.format(rateTargetToBase) + " " + result.getBaseCode().toUpperCase());
-                    civTargetCurrencyFlag.setImageBitmap(AppApplication.instance.getCacheImg(result.getBaseCode().toLowerCase()));
-                    //Picasso.with(getApplicationContext()).load(AppApplication.instance.getBaseUrl() + ).into(civTargetCurrencyFlag);
+                    etTargetCurrencyAmount.setText("");
 
                     mDialog.dismiss();
                 } catch (Exception e) {
@@ -259,5 +254,42 @@ public class MainActivity extends AppCompatActivity {
                 mDialog.dismiss();
             }
         });
+    }
+
+    private class ImageDownloadAnsyTask extends AsyncTask<String, Integer, String> {
+        @Override
+        protected String doInBackground(String... strings) {
+
+            try {
+                String imgUrl = strings[0];
+                String key = strings[1];
+                Bitmap bmp = ImageHelper.decodeBitmap(imgUrl, 200);
+                AppApplication.instance.putCacheImg(key, bmp);
+                return key;
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                super.onPostExecute(result);
+                if (result != null) {
+                    // Setup base flag image
+                    if (result.toLowerCase().equals(AppApplication.instance.getBaseCode().toLowerCase())) {
+                        civBaseCurrencyFlag.setImageBitmap(AppApplication.instance.getCacheImg(AppApplication.instance.getBaseCode().toLowerCase()));
+                    }
+
+                    // Setup target flag image
+                    if (result.toLowerCase().equals(AppApplication.instance.getTargetCode().toLowerCase())) {
+                        civTargetCurrencyFlag.setImageBitmap(AppApplication.instance.getCacheImg(AppApplication.instance.getTargetCode().toLowerCase()));
+                    }
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
     }
 }

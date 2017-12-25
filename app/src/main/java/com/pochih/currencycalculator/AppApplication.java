@@ -39,7 +39,9 @@ public class AppApplication extends Application {
             //region Step 1. Initial settings
             instance = this;
             setBaseUrl(DEFAULT_BASE_URL);
-            flagCache = new LruCache<>(100); // Flag image cache
+            int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+            int cacheSize = maxMemory / 2;
+            flagCache = new LruCache<>(cacheSize); // Flag image cache
             //endregion
 
             //region Step 2. Initial Http call setting
@@ -118,26 +120,26 @@ public class AppApplication extends Application {
         }
     }
 
-    public boolean isInitial() {
-        try {
-            return getSharedPreferences(SETTINGS, MODE_PRIVATE)
-                    .getBoolean(SETTINGS_IS_INITIAL, true);
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-            return false;
-        }
-    }
-
-    public void setIsInitial(boolean isInitial) {
-        try {
-            getSharedPreferences(SETTINGS, MODE_PRIVATE)
-                    .edit()
-                    .putBoolean(SETTINGS_IS_INITIAL, isInitial)
-                    .commit();
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
-    }
+//    public boolean isInitial() {
+//        try {
+//            return getSharedPreferences(SETTINGS, MODE_PRIVATE)
+//                    .getBoolean(SETTINGS_IS_INITIAL, true);
+//        } catch (Exception e) {
+//            Log.e(TAG, e.getMessage());
+//            return false;
+//        }
+//    }
+//
+//    public void setIsInitial(boolean isInitial) {
+//        try {
+//            getSharedPreferences(SETTINGS, MODE_PRIVATE)
+//                    .edit()
+//                    .putBoolean(SETTINGS_IS_INITIAL, isInitial)
+//                    .commit();
+//        } catch (Exception e) {
+//            Log.e(TAG, e.getMessage());
+//        }
+//    }
 
     public void putCacheImg(String key, Bitmap bitmap) {
         try {

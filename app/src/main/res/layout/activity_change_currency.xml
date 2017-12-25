@@ -7,11 +7,27 @@
     tools:context="com.pochih.currencycalculator.activity.ChangeCurrencyActivity">
 
 
-    <SearchView
-        android:id="@+id/svCurrency"
+    <!--<android.support.v7.widget.SearchView-->
+    <!--android:id="@+id/svCurrency"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@color/colorPrimaryDark"-->
+    <!--android:closeIcon="@null"-->
+    <!--android:iconifiedByDefault="false"-->
+    <!--android:queryHint="Enter the currency"-->
+    <!--android:textColor="#FFFFFF" />-->
+
+    <EditText
+        android:id="@+id/etCurrency"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark" />
+        android:background="@color/colorPrimaryDark"
+        android:drawableRight="@drawable/ic_search"
+        android:hint="Enter the currency"
+        android:padding="10dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvCurrency"
@@ -21,6 +37,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/svCurrency" />
+        app:layout_constraintTop_toBottomOf="@id/etCurrency" />
 
 </android.support.constraint.ConstraintLayout>

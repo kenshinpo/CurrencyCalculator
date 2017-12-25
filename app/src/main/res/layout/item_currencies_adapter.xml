@@ -25,7 +25,7 @@
             android:id="@+id/civBaseCurrencyFlag"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/us"
+            android:src="@drawable/ic_default_flag"
             app:civ_border_color="@color/colorGray"
             app:civ_border_width="1dp" />
 
@@ -37,7 +37,6 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="5dp"
             android:layout_marginStart="10dp"
-            android:text="AED"
             android:textColor="#445462"
             android:textSize="17sp" />
 
@@ -57,7 +56,6 @@
             android:layout_marginRight="5dp"
             android:layout_marginStart="5dp"
             android:layout_weight="1"
-            android:text="UAE Dirham"
             android:textColor="#445462"
             android:textSize="17sp" />
 
