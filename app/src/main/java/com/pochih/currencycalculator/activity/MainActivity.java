@@ -2,7 +2,10 @@ package com.pochih.currencycalculator.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,9 +18,12 @@ import android.widget.TextView;
 
 import com.pochih.currencycalculator.AppApplication;
 import com.pochih.currencycalculator.R;
+import com.pochih.currencycalculator.entity.Currency;
 import com.pochih.currencycalculator.entity.Exchange;
+import com.pochih.currencycalculator.tool.ImageHelper;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
 
     private double rateBaseToTarget = 1.0;
     private double rateTargetToBase = 1.0;
+
+    HandlerThread mHandlerThread;
+    Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +140,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             //endregion
+
+            mHandlerThread = new HandlerThread("LRU Cache Handler");
+            mHandlerThread.start();
+            mHandler = new Handler(mHandlerThread.getLooper());
+
         } catch (Exception e) {
             Log.e(TAG, e.toString());
         }
@@ -142,31 +156,48 @@ public class MainActivity extends AppCompatActivity {
             super.onResume();
             //region Http API call
             mDialog.show();
-            Call<Exchange> call = AppApplication.currencyService.getExchange(AppApplication.instance.getBaseCode(), AppApplication.instance.getTargetCode());
-            call.enqueue(new Callback<Exchange>() {
 
-                @Override
-                public void onResponse(Call<Exchange> call, Response<Exchange> response) {
-                    Exchange result = response.body();
-                    rateBaseToTarget = result.getRate();
-                    tvBaseCurrencyCode.setText(result.getBaseCode().toUpperCase());
-                    tvBaseToTarget.setText("1 " + result.getBaseCode().toUpperCase() + " = " + rateBaseToTarget + " " + result.getTargetCode().toUpperCase());
-                    ///Picasso.with(getApplicationContext()).load(AppApplication.instance.getBaseUrl() + ).into(civBaseCurrencyFlag);
+            if (AppApplication.instance.isInitial()) {
+                //region Init image cache
+                Call<List<Currency>> call = AppApplication.currencyService.getCurrency();
+                call.enqueue(new Callback<List<Currency>>() {
 
-                    tvTargetCurrencyCode.setText(result.getTargetCode().toUpperCase());
-                    rateTargetToBase = 1 / result.getRate();
-                    tvTargetToBase.setText("1 " + result.getTargetCode().toUpperCase() + " = " + df.format(rateTargetToBase) + " " + result.getBaseCode().toUpperCase());
-                    //Picasso.with(getApplicationContext()).load(AppApplication.instance.getBaseUrl() + ).into(civTargetCurrencyFlag);
+                    @Override
+                    public void onResponse(Call<List<Currency>> call, Response<List<Currency>> response) {
+                        final List<Currency> currencies = response.body();
+                        for (int i = 0; i < currencies.size(); i++) {
+                            final String key = currencies.get(i).getCode().toLowerCase();
+                            final String url = AppApplication.instance.getBaseUrl() + currencies.get(i).getFlagPath();
+                            if (AppApplication.instance.getCacheImg(key) == null) {
+//                                bmp = ImageHelper.decodeBitmap(AppApplication.instance.getBaseUrl() + currencies.get(i).getFlagPath(), 200);
+//                                AppApplication.instance.putCacheImg(key, bmp);
 
-                    mDialog.dismiss();
-                }
+                                mHandler.post(new Runnable() {
+                                    Bitmap bmp;
 
-                @Override
-                public void onFailure(Call<Exchange> call, Throwable t) {
-                    Log.e(TAG, t.getMessage());
-                    mDialog.dismiss();
-                }
-            });
+                                    @Override
+                                    public void run() {
+                                        bmp = ImageHelper.decodeBitmap(url, 200);
+                                        AppApplication.instance.putCacheImg(key, bmp);
+                                    }
+                                });
+                            }
+                        }
+                        getExchange();
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Currency>> call, Throwable t) {
+                        Log.e(TAG, t.getMessage());
+
+                    }
+                });
+                //endregion
+            } else {
+                getExchange();
+            }
+
+
             //endregion
         } catch (Exception e) {
             Log.e(TAG, e.toString());
@@ -194,5 +225,39 @@ public class MainActivity extends AppCompatActivity {
             case R.id.etTargetCurrencyAmount:
                 break;
         }
+    }
+
+    private void getExchange() {
+        Call<Exchange> call = AppApplication.currencyService.getExchange(AppApplication.instance.getBaseCode(), AppApplication.instance.getTargetCode());
+        call.enqueue(new Callback<Exchange>() {
+
+            @Override
+            public void onResponse(Call<Exchange> call, Response<Exchange> response) {
+                try {
+                    Exchange result = response.body();
+                    rateBaseToTarget = result.getRate();
+                    tvBaseCurrencyCode.setText(result.getBaseCode().toUpperCase());
+                    tvBaseToTarget.setText("1 " + result.getBaseCode().toUpperCase() + " = " + rateBaseToTarget + " " + result.getTargetCode().toUpperCase());
+                    civBaseCurrencyFlag.setImageBitmap(AppApplication.instance.getCacheImg(result.getBaseCode().toLowerCase()));
+
+                    tvTargetCurrencyCode.setText(result.getTargetCode().toUpperCase());
+                    rateTargetToBase = 1 / result.getRate();
+                    tvTargetToBase.setText("1 " + result.getTargetCode().toUpperCase() + " = " + df.format(rateTargetToBase) + " " + result.getBaseCode().toUpperCase());
+                    civTargetCurrencyFlag.setImageBitmap(AppApplication.instance.getCacheImg(result.getBaseCode().toLowerCase()));
+                    //Picasso.with(getApplicationContext()).load(AppApplication.instance.getBaseUrl() + ).into(civTargetCurrencyFlag);
+
+                    mDialog.dismiss();
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                    mDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Exchange> call, Throwable t) {
+                Log.e(TAG, t.getMessage());
+                mDialog.dismiss();
+            }
+        });
     }
 }

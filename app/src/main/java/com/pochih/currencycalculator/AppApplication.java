@@ -1,7 +1,9 @@
 package com.pochih.currencycalculator;
 
 import android.app.Application;
+import android.graphics.Bitmap;
 import android.util.Log;
+import android.util.LruCache;
 
 import com.pochih.currencycalculator.http.service.ICurrencyService;
 
@@ -19,13 +21,15 @@ public class AppApplication extends Application {
     private static final String SETTINGS_BASE_URL = "baseUrl";
     private static final String SETTINGS_BASE_CODE = "baseCode";
     private static final String SETTINGS_TARGET_CODE = "targetCode";
+    private static final String SETTINGS_IS_INITIAL = "isInitial";
 
-    private static final String DEFAULT_BASE_URL = "http://52.221.53.204:8080/";
+    private static final String DEFAULT_BASE_URL = "http://52.221.53.204:8080";
     private static final String DEFAULT_BASE_CODE = "USD";
     private static final String DEFAULT_TARGET_CODE = "SGD";
 
     public static AppApplication instance;
     public static ICurrencyService currencyService;
+    public static LruCache<String, Bitmap> flagCache;
 
     @Override
     public void onCreate() {
@@ -35,6 +39,7 @@ public class AppApplication extends Application {
             //region Step 1. Initial settings
             instance = this;
             setBaseUrl(DEFAULT_BASE_URL);
+            flagCache = new LruCache<>(100); // Flag image cache
             //endregion
 
             //region Step 2. Initial Http call setting
@@ -111,5 +116,38 @@ public class AppApplication extends Application {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
+    }
+
+    public boolean isInitial() {
+        try {
+            return getSharedPreferences(SETTINGS, MODE_PRIVATE)
+                    .getBoolean(SETTINGS_IS_INITIAL, true);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            return false;
+        }
+    }
+
+    public void setIsInitial(boolean isInitial) {
+        try {
+            getSharedPreferences(SETTINGS, MODE_PRIVATE)
+                    .edit()
+                    .putBoolean(SETTINGS_IS_INITIAL, isInitial)
+                    .commit();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    public void putCacheImg(String key, Bitmap bitmap) {
+        try {
+            this.flagCache.put(key, bitmap);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    public Bitmap getCacheImg(String key) {
+        return this.flagCache.get(key);
     }
 }
