@@ -105,6 +105,7 @@ public class ChangeCurrencyActivity extends AppCompatActivity {
             //endregion
 
             //region
+            this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             etCurrency.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {

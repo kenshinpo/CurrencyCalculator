@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ProgressDialog mDialog;
 
-    DecimalFormat df = new DecimalFormat("#.#######");
+    DecimalFormat df = new DecimalFormat("#.###");
 
     private double rateBaseToTarget = 1.0;
     private double rateTargetToBase = 1.0;
