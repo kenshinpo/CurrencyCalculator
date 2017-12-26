@@ -22,7 +22,6 @@ import com.pochih.currencycalculator.entity.Currency;
 import com.pochih.currencycalculator.entity.Exchange;
 import com.pochih.currencycalculator.utility.ImageHelper;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 import butterknife.BindView;
@@ -63,9 +62,6 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout llTargetCurrency;
 
     private ProgressDialog mDialog;
-
-    DecimalFormat df = new DecimalFormat("#.###");
-
     private double rateBaseToTarget = 1.0;
     private double rateTargetToBase = 1.0;
 
@@ -98,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                         if (!s.toString().isEmpty()) {
                             try {
                                 double input = Double.valueOf(s.toString());
-                                etTargetCurrencyAmount.setText(df.format(input * rateBaseToTarget));
+                                etTargetCurrencyAmount.setText(AppApplication.instance.getDecimals().format(input * rateBaseToTarget));
                             } catch (Exception ex) {
                                 Log.e(TAG, ex.getMessage());
                             }
@@ -125,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                         if (!s.toString().isEmpty()) {
                             try {
                                 double input = Double.valueOf(s.toString());
-                                etBaseCurrencyAmount.setText(df.format(input * rateTargetToBase));
+                                etBaseCurrencyAmount.setText(AppApplication.instance.getDecimals().format(input * rateTargetToBase));
                             } catch (Exception ex) {
                                 Log.e(TAG, ex.getMessage());
                             }
@@ -236,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
                     // Target currency UI
                     tvTargetCurrencyCode.setText(result.getTargetCode().toUpperCase());
                     rateTargetToBase = 1 / result.getRate();
-                    tvTargetToBase.setText("1 " + result.getTargetCode().toUpperCase() + " = " + df.format(rateTargetToBase) + " " + result.getBaseCode().toUpperCase());
+                    tvTargetToBase.setText("1 " + result.getTargetCode().toUpperCase() + " = " + AppApplication.instance.getDecimals().format(rateTargetToBase) + " " + result.getBaseCode().toUpperCase());
                     etTargetCurrencyAmount.setText("");
 
                     mDialog.dismiss();

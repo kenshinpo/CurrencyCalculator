@@ -7,6 +7,8 @@ import android.util.LruCache;
 
 import com.pochih.currencycalculator.http.service.ICurrencyService;
 
+import java.text.DecimalFormat;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -21,11 +23,12 @@ public class AppApplication extends Application {
     private static final String SETTINGS_BASE_URL = "baseUrl";
     private static final String SETTINGS_BASE_CODE = "baseCode";
     private static final String SETTINGS_TARGET_CODE = "targetCode";
-    private static final String SETTINGS_IS_INITIAL = "isInitial";
+    private static final String SETTINGS_DECIMALS = "decimals";
 
     private static final String DEFAULT_BASE_URL = "http://52.221.53.204:8080";
     private static final String DEFAULT_BASE_CODE = "USD";
     private static final String DEFAULT_TARGET_CODE = "SGD";
+    private static final int DEFAULT_DECIMALS = 3;
 
     public static AppApplication instance;
     public static ICurrencyService currencyService;
@@ -120,27 +123,6 @@ public class AppApplication extends Application {
         }
     }
 
-//    public boolean isInitial() {
-//        try {
-//            return getSharedPreferences(SETTINGS, MODE_PRIVATE)
-//                    .getBoolean(SETTINGS_IS_INITIAL, true);
-//        } catch (Exception e) {
-//            Log.e(TAG, e.getMessage());
-//            return false;
-//        }
-//    }
-//
-//    public void setIsInitial(boolean isInitial) {
-//        try {
-//            getSharedPreferences(SETTINGS, MODE_PRIVATE)
-//                    .edit()
-//                    .putBoolean(SETTINGS_IS_INITIAL, isInitial)
-//                    .commit();
-//        } catch (Exception e) {
-//            Log.e(TAG, e.getMessage());
-//        }
-//    }
-
     public void putCacheImg(String key, Bitmap bitmap) {
         try {
             this.flagCache.put(key, bitmap);
@@ -151,5 +133,16 @@ public class AppApplication extends Application {
 
     public Bitmap getCacheImg(String key) {
         return this.flagCache.get(key);
+    }
+
+    public DecimalFormat getDecimals() {
+        String pattern = "#.";
+        int decimals = getSharedPreferences(SETTINGS, MODE_PRIVATE)
+                .getInt(SETTINGS_DECIMALS, DEFAULT_DECIMALS);
+
+        for (int i = 0; i < decimals; i++) {
+            pattern += "#";
+        }
+        return new DecimalFormat(pattern);
     }
 }

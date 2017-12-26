@@ -6,17 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.pochih.currencycalculator.activity.ChangeCurrencyActivity">
 
-
-    <!--<android.support.v7.widget.SearchView-->
-    <!--android:id="@+id/svCurrency"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:background="@color/colorPrimaryDark"-->
-    <!--android:closeIcon="@null"-->
-    <!--android:iconifiedByDefault="false"-->
-    <!--android:queryHint="Enter the currency"-->
-    <!--android:textColor="#FFFFFF" />-->
-
     <EditText
         android:id="@+id/etCurrency"
         android:layout_width="match_parent"
