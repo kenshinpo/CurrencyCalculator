@@ -77,14 +77,15 @@
                         android:id="@+id/tvBaseCurrencyCode"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:layout_weight="1"
                         android:textSize="25sp" />
 
                     <ImageView
+                        android:contentDescription="@null"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
                         android:src="@drawable/ic_arrow_down" />
 
                 </LinearLayout>
@@ -93,7 +94,7 @@
                     android:id="@+id/etBaseCurrencyAmount"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_weight="1"
                     android:gravity="end"
                     android:hint="@string/text_Amount"
@@ -162,14 +163,14 @@
                         android:id="@+id/tvTargetCurrencyCode"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:layout_weight="1"
                         android:textSize="25sp" />
 
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
                         android:src="@drawable/ic_arrow_down" />
 
                 </LinearLayout>
@@ -178,7 +179,7 @@
                     android:id="@+id/etTargetCurrencyAmount"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_weight="1"
                     android:gravity="end"
                     android:hint="@string/text_Amount"

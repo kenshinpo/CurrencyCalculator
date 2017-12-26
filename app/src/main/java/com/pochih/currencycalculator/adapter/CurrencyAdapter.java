@@ -21,7 +21,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by admin on 2017/12/20.
+ * Created by PoChih on 2017/12/20.
  */
 
 public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.ViewHolder> {

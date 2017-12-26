@@ -16,5 +16,9 @@
     <string name="text_Loading">Loading</string>
     <string name="text_Wait_while_loading">Wait while loading...</string>
     <string name="text_Please_check_your_network_connection">Please check your network connection</string>
+    <string name="text_Select_Currency">Select Currency</string>
+    <string name="text_Enter_the_currency">Enter the currency</string>
+    <string name="text_Decimals_">Decimals:</string>
+    <string name="text_Save">Save</string>
 
 </resources>

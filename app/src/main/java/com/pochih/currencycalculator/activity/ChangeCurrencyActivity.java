@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -31,7 +30,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by admin on 2017/12/20.
+ * Created by PoChih on 2017/12/20.
  */
 
 public class ChangeCurrencyActivity extends AppCompatActivity {
@@ -61,10 +60,6 @@ public class ChangeCurrencyActivity extends AppCompatActivity {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_change_currency);
-            Toolbar toolbar = findViewById(R.id.toolbar);
-            toolbar.setTitle("");
-            setSupportActionBar(toolbar);
-
             ButterKnife.bind(this);
 
             //region Get intent args

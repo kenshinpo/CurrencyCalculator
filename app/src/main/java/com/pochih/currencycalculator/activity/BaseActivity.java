@@ -13,11 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.pochih.currencycalculator.R;
 
 /**
- * Created by A-Po on 2017/12/26.
+ * Created by PoChih on 2017/12/26.
  */
 
 public class BaseActivity extends AppCompatActivity {
@@ -129,6 +130,7 @@ public class BaseActivity extends AppCompatActivity {
                     "'toolbar'");
         }
 
+        TextView mTitle = mToolbar.findViewById(R.id.toolbar_title);
         mDrawerLayout = findViewById(R.id.drawer_layout);
         if (mDrawerLayout != null) {
             NavigationView navigationView = findViewById(R.id.nav_view);
@@ -141,10 +143,16 @@ public class BaseActivity extends AppCompatActivity {
                     mToolbar, R.string.open_content_drawer, R.string.close_content_drawer);
             mDrawerLayout.setDrawerListener(drawerListener);
             populateDrawerItems(navigationView);
+
             setSupportActionBar(mToolbar);
+            mTitle.setText(mToolbar.getTitle());
+            mToolbar.setTitle("");
             updateDrawerToggle();
         } else {
+
             setSupportActionBar(mToolbar);
+            mTitle.setText(mToolbar.getTitle());
+            mToolbar.setTitle("");
         }
 
         mToolbarInitialized = true;

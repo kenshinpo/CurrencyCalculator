@@ -17,6 +17,10 @@ import com.pochih.currencycalculator.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Created by PoChih on 2017/12/20.
+ */
+
 public class SettingActivity extends BaseActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();

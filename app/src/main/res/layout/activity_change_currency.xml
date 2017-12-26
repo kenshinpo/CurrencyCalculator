@@ -1,75 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".activity.ChangeCurrencyActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/ablToolbar"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary">
+        android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout
+        <include
+            android:id="@+id/toolbar_container"
+            layout="@layout/toolbar" />
+
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="0dp"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:popupTheme="@style/AppTheme.PopupOverlay">
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <TextView
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/colorPrimary"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/text_Select_Currency"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </android.support.v7.widget.Toolbar>
+
+                <ImageButton
+                    android:id="@+id/ibClose"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="#FFFFFF"
-                    android:layout_gravity="center"
-                    android:text="Select Currency" />
+                    android:layout_height="0dp"
+                    android:background="@null"
+                    android:contentDescription="@null"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_close"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </android.support.v7.widget.Toolbar>
+            </android.support.constraint.ConstraintLayout>
 
-            <ImageButton
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:id="@+id/ibClose"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:background="@null"
-                android:padding="10dp"
-                android:src="@drawable/ic_close" />
-        </android.support.constraint.ConstraintLayout>
-    </android.support.design.widget.AppBarLayout>
+        </android.support.design.widget.AppBarLayout>
 
-    <EditText
-        android:id="@+id/etCurrency"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorDarkBlue"
-        android:drawableRight="@drawable/ic_search"
-        android:hint="Enter the currency"
-        android:padding="10dp"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#FFFFFF"
-        app:layout_constraintTop_toBottomOf="@id/ablToolbar" />
+        <EditText
+            android:id="@+id/etCurrency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorDarkBlue"
+            android:drawableEnd="@drawable/ic_search"
+            android:hint="@string/text_Enter_the_currency"
+            android:padding="10dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_container" />
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvCurrency"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:paddingBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etCurrency" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvCurrency"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etCurrency" />
 
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.DrawerLayout>
