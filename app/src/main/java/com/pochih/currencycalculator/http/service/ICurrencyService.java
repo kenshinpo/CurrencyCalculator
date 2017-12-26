@@ -19,5 +19,4 @@ public interface ICurrencyService {
 
     @GET("api/exchange")
     Call<Exchange> getExchange(@Query("baseCode") String baseCode, @Query("targetCode") String targetCode);
-    //Call<Exchange> getExchange(@Body ExchangeRequest request);
 }
