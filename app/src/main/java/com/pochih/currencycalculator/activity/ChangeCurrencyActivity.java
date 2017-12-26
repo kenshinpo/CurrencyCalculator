@@ -55,13 +55,15 @@ public class ChangeCurrencyActivity extends AppCompatActivity {
             setContentView(R.layout.activity_change_currency);
             ButterKnife.bind(this);
 
+            //region Get intent args
             Intent intent = this.getIntent();
             selectType = intent.getIntExtra(INTENT_EXTRA_SELECT_TYPE, 0);
             if (selectType != SELECT_TYPE_BASE_CURRENCY && selectType != SELECT_TYPE_TARGET_CURRENCY) {
                 Log.e(TAG, "selectType value is invalid! selectType: " + selectType);
-                Toast.makeText(getApplicationContext(), "Please check network", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.text_Please_check_your_network_connection), Toast.LENGTH_LONG).show();
                 finish();
             }
+            //endregion
 
             //region Setup ProgressDialog
             mDialog = new ProgressDialog(this);
@@ -72,7 +74,9 @@ public class ChangeCurrencyActivity extends AppCompatActivity {
             mDialog.setMessage(getString(R.string.text_Wait_while_loading));
             //endregion
 
+            //region Setup RecyclerView UI
             rvCurrency.setLayoutManager(new LinearLayoutManager(this));
+            //endregion
         } catch (Exception ex) {
             Log.e(TAG, ex.getMessage());
         }
@@ -100,6 +104,8 @@ public class ChangeCurrencyActivity extends AppCompatActivity {
                 public void onFailure(Call<List<Currency>> call, Throwable t) {
                     Log.e(TAG, t.getMessage());
                     mDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), getString(R.string.text_Please_check_your_network_connection), Toast.LENGTH_LONG).show();
+                    finish();
                 }
             });
             //endregion
@@ -116,9 +122,6 @@ public class ChangeCurrencyActivity extends AppCompatActivity {
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     try {
                         if (currencies != null) {
-                            //currencies.stream().filter(c -> c.getName().contains(s.toString())).collect(Collectors.toList());
-                            //currencies.removeIf(c-> c.getName().contentEquals(s));
-
                             String keyword = String.valueOf(s);
                             resultCurrencies.clear();
                             if (!keyword.isEmpty()) {
@@ -127,17 +130,13 @@ public class ChangeCurrencyActivity extends AppCompatActivity {
                                         resultCurrencies.add(currencies.get(i));
                                     }
                                 }
-
-                                //adapter = new CurrencyAdapter(ChangeCurrencyActivity.this, resultCurrencies, selectType);
                             } else {
                                 resultCurrencies.addAll(currencies);
-                                //adapter = new CurrencyAdapter(ChangeCurrencyActivity.this, resultCurrencies, selectType);
                             }
 
                             adapter.notifyDataSetChanged();
-                            //rvCurrency.notify();
                         } else {
-
+                            Log.e(TAG, "currencies is null!");
                         }
                     } catch (Exception e) {
                         Log.e(TAG, e.getMessage());
@@ -152,13 +151,8 @@ public class ChangeCurrencyActivity extends AppCompatActivity {
             //endregion
         } catch (Exception ex) {
             Log.e(TAG, ex.getMessage());
+            Toast.makeText(getApplicationContext(), getString(R.string.text_Please_check_your_network_connection), Toast.LENGTH_LONG).show();
+            finish();
         }
     }
-
-    private CurrencyAdapter.OnItemClickListener rvCurrencyOnItemClickListener = new CurrencyAdapter.OnItemClickListener() {
-        @Override
-        public void onItemClick(View view, int position) {
-
-        }
-    };
 }

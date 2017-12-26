@@ -6,4 +6,5 @@
     <string name="text_Amount">Amount</string>
     <string name="text_Loading">Loading</string>
     <string name="text_Wait_while_loading">Wait while loading...</string>
+    <string name="text_Please_check_your_network_connection">Please check your network connection</string>
 </resources>

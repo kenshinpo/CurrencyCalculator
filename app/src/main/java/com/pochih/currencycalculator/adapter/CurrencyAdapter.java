@@ -24,14 +24,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by admin on 2017/12/20.
  */
 
-public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.ViewHolder> implements View.OnClickListener {
+public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.ViewHolder> {
     private static final String TAG = CurrencyAdapter.class.getSimpleName();
 
     private Context mContext;
     private List<Currency> currencies;
     private int selectType = 0;
-
-    private OnItemClickListener mOnItemClickListener = null;
 
     public CurrencyAdapter(Context mContext, List<Currency> currencies, int selectType) {
         this.mContext = mContext;
@@ -39,31 +37,11 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.ViewHo
         this.selectType = selectType;
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(View view, int position);
-    }
-
-    @Override
-    public void onClick(View v) {
-        try {
-            if (mOnItemClickListener != null) {
-                mOnItemClickListener.onItemClick(v, Integer.parseInt(v.getTag().toString()));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.mOnItemClickListener = listener;
-    }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_currencies_adapter, parent, false);
         ViewHolder vh = new ViewHolder(itemView);
-        itemView.setOnClickListener(this);
         return vh;
     }
 
@@ -96,7 +74,6 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.ViewHo
         } catch (Exception e) {
             Log.e(TAG, e.toString());
         }
-
     }
 
     @Override

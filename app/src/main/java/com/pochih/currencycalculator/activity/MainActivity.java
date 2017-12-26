@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pochih.currencycalculator.AppApplication;
 import com.pochih.currencycalculator.R;
@@ -65,9 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
     private double rateBaseToTarget = 1.0;
     private double rateTargetToBase = 1.0;
-
-    HandlerThread mHandlerThread;
-    Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,11 +139,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             //endregion
-
-            mHandlerThread = new HandlerThread("LRU Cache Handler");
-            mHandlerThread.start();
-            mHandler = new Handler(mHandlerThread.getLooper());
-
         } catch (Exception e) {
             Log.e(TAG, e.toString());
         }
@@ -189,14 +182,16 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<List<Currency>> call, Throwable t) {
                     Log.e(TAG, t.getMessage());
-
+                    Toast.makeText(getApplicationContext(), getString(R.string.text_Please_check_your_network_connection), Toast.LENGTH_LONG).show();
+                    mDialog.dismiss();
                 }
             });
             //endregion
 
             //endregion
         } catch (Exception e) {
-            Log.e(TAG, e.toString());
+            Log.e(TAG, e.getMessage());
+            mDialog.dismiss();
         }
     }
 
@@ -231,11 +226,12 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Exchange> call, Response<Exchange> response) {
                 try {
                     Exchange result = response.body();
+                    // Base currency UI
                     rateBaseToTarget = result.getRate();
                     tvBaseCurrencyCode.setText(result.getBaseCode().toUpperCase());
                     tvBaseToTarget.setText("1 " + result.getBaseCode().toUpperCase() + " = " + rateBaseToTarget + " " + result.getTargetCode().toUpperCase());
                     etBaseCurrencyAmount.setText("");
-
+                    // Target currency UI
                     tvTargetCurrencyCode.setText(result.getTargetCode().toUpperCase());
                     rateTargetToBase = 1 / result.getRate();
                     tvTargetToBase.setText("1 " + result.getTargetCode().toUpperCase() + " = " + df.format(rateTargetToBase) + " " + result.getBaseCode().toUpperCase());
@@ -251,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Exchange> call, Throwable t) {
                 Log.e(TAG, t.getMessage());
+                Toast.makeText(getApplicationContext(), getString(R.string.text_Please_check_your_network_connection), Toast.LENGTH_LONG).show();
                 mDialog.dismiss();
             }
         });
