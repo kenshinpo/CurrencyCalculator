@@ -5,16 +5,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -42,8 +35,7 @@ import retrofit2.Response;
  * Created by PoChih on 2017/12/20.
  */
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -79,20 +71,7 @@ public class MainActivity extends AppCompatActivity
             setContentView(R.layout.activity_main);
             ButterKnife.bind(this);
 
-            //region System
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-            setSupportActionBar(toolbar);
-
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.addDrawerListener(toggle);
-            toggle.syncState();
-
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);
-            //endregion
-
+            initializeToolbar();
 
             //region Setup ProgressDialog
             mDialog = new ProgressDialog(this);
@@ -164,8 +143,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
     @Override
-    protected void onResume() {
+    public void onResume() {
         try {
             super.onResume();
             //region Http API call
@@ -308,35 +288,5 @@ public class MainActivity extends AppCompatActivity
                 Log.e(TAG, e.getMessage());
             }
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_currency) {
-            Toast.makeText(getApplicationContext(), "Currency", Toast.LENGTH_LONG).show();
-        } else if (id == R.id.nav_settings) {
-            Toast.makeText(getApplicationContext(), "Setting", Toast.LENGTH_LONG).show();
-        } else {
-            // do nothing
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 }

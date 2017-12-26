@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.pochih.currencycalculator.AppApplication;
@@ -38,12 +41,14 @@ public class ChangeCurrencyActivity extends AppCompatActivity {
     public static final int SELECT_TYPE_BASE_CURRENCY = 1;
     public static final int SELECT_TYPE_TARGET_CURRENCY = 2;
 
-
     @BindView(R.id.rvCurrency)
     RecyclerView rvCurrency;
 
     @BindView(R.id.etCurrency)
     EditText etCurrency;
+
+    @BindView(R.id.ibClose)
+    ImageButton ibClose;
 
     private ProgressDialog mDialog;
     private CurrencyAdapter adapter;
@@ -56,6 +61,10 @@ public class ChangeCurrencyActivity extends AppCompatActivity {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_change_currency);
+            Toolbar toolbar = findViewById(R.id.toolbar);
+            toolbar.setTitle("");
+            setSupportActionBar(toolbar);
+
             ButterKnife.bind(this);
 
             //region Get intent args
@@ -79,6 +88,15 @@ public class ChangeCurrencyActivity extends AppCompatActivity {
 
             //region Setup RecyclerView UI
             rvCurrency.setLayoutManager(new LinearLayoutManager(this));
+            //endregion
+
+            //region Setup UI event
+            ibClose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
             //endregion
         } catch (Exception ex) {
             Log.e(TAG, ex.getMessage());

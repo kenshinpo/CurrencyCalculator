@@ -5,5 +5,5 @@
     <string name="text_Amount">金額</string>
     <string name="text_Loading">讀取中</string>
     <string name="text_Wait_while_loading">等待讀取中</string>
-    <string name="ㄒ">請檢查您的網路連線</string>
+    <string name="text_Please_check_your_network_connection">請檢查您的網路連線</string>
 </resources>

@@ -4,18 +4,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.pochih.currencycalculator.activity.ChangeCurrencyActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".activity.ChangeCurrencyActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/ablToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="0dp"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:layout_gravity="center"
+                    android:text="Select Currency" />
+
+            </android.support.v7.widget.Toolbar>
+
+            <ImageButton
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/ibClose"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:background="@null"
+                android:padding="10dp"
+                android:src="@drawable/ic_close" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.design.widget.AppBarLayout>
 
     <EditText
         android:id="@+id/etCurrency"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorDarkBlue"
         android:drawableRight="@drawable/ic_search"
         android:hint="Enter the currency"
         android:padding="10dp"
         android:textColor="#FFFFFF"
-        android:textColorHint="#FFFFFF" />
+        android:textColorHint="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/ablToolbar" />
 
 
     <android.support.v7.widget.RecyclerView
