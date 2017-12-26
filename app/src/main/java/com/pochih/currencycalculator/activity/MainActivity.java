@@ -95,7 +95,7 @@ public class MainActivity extends BaseActivity {
                         if (!s.toString().isEmpty()) {
                             try {
                                 double input = Double.valueOf(s.toString());
-                                etTargetCurrencyAmount.setText(AppApplication.instance.getDecimals().format(input * rateBaseToTarget));
+                                etTargetCurrencyAmount.setText(AppApplication.instance.getDecimalFormat().format(input * rateBaseToTarget));
                             } catch (Exception ex) {
                                 Log.e(TAG, ex.getMessage());
                             }
@@ -122,7 +122,7 @@ public class MainActivity extends BaseActivity {
                         if (!s.toString().isEmpty()) {
                             try {
                                 double input = Double.valueOf(s.toString());
-                                etBaseCurrencyAmount.setText(AppApplication.instance.getDecimals().format(input * rateTargetToBase));
+                                etBaseCurrencyAmount.setText(AppApplication.instance.getDecimalFormat().format(input * rateTargetToBase));
                             } catch (Exception ex) {
                                 Log.e(TAG, ex.getMessage());
                             }
@@ -234,7 +234,7 @@ public class MainActivity extends BaseActivity {
                     // Target currency UI
                     tvTargetCurrencyCode.setText(result.getTargetCode().toUpperCase());
                     rateTargetToBase = 1 / result.getRate();
-                    tvTargetToBase.setText("1 " + result.getTargetCode().toUpperCase() + " = " + AppApplication.instance.getDecimals().format(rateTargetToBase) + " " + result.getBaseCode().toUpperCase());
+                    tvTargetToBase.setText("1 " + result.getTargetCode().toUpperCase() + " = " + AppApplication.instance.getDecimalFormat().format(rateTargetToBase) + " " + result.getBaseCode().toUpperCase());
                     etTargetCurrencyAmount.setText("");
 
                     mDialog.dismiss();

@@ -135,14 +135,34 @@ public class AppApplication extends Application {
         return this.flagCache.get(key);
     }
 
-    public DecimalFormat getDecimals() {
-        String pattern = "#.";
+    public DecimalFormat getDecimalFormat() {
+        String pattern = "#";
         int decimals = getSharedPreferences(SETTINGS, MODE_PRIVATE)
                 .getInt(SETTINGS_DECIMALS, DEFAULT_DECIMALS);
 
-        for (int i = 0; i < decimals; i++) {
-            pattern += "#";
+        if (decimals != 0) {
+            pattern += ".";
+            for (int i = 0; i < decimals; i++) {
+                pattern += "#";
+            }
         }
+
         return new DecimalFormat(pattern);
+    }
+
+    public int getDecimal() {
+        return getSharedPreferences(SETTINGS, MODE_PRIVATE)
+                .getInt(SETTINGS_DECIMALS, DEFAULT_DECIMALS);
+    }
+
+    public void setDecimal(int decimal) {
+        try {
+            getSharedPreferences(SETTINGS, MODE_PRIVATE)
+                    .edit()
+                    .putInt(SETTINGS_DECIMALS, decimal)
+                    .commit();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 }

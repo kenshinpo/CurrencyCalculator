@@ -11,7 +11,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -26,19 +25,14 @@ public class BaseActivity extends AppCompatActivity {
     private static final String TAG = BaseActivity.class.getSimpleName();
 
     private Toolbar mToolbar;
-
     private ActionBarDrawerToggle mDrawerToggle;
-
     private DrawerLayout mDrawerLayout;
-
     private boolean mToolbarInitialized;
-
     private int mItemToOpenWhenDrawerCloses = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "Activity onCreate");
     }
 
     @Override
@@ -53,9 +47,6 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        // Whenever the fragment back stack changes, we may need to update the
-        // action bar toggle: only top level screens show the hamburger-like icon, inner
-        // screens - either Activities or fragments - show the "Up" icon instead.
         getFragmentManager().addOnBackStackChangedListener(backStackChangedListener);
     }
 
@@ -86,7 +77,6 @@ public class BaseActivity extends AppCompatActivity {
         if (mDrawerToggle != null && mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        // If not handled by drawerToggle, home needs to be handled by returning to previous
         if (item != null && item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;
@@ -96,17 +86,14 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // If the drawer is open, back will close it
         if (mDrawerLayout != null && mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawers();
             return;
         }
-        // Otherwise, it may return to the previous fragment stack
         FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager.getBackStackEntryCount() > 0) {
             fragmentManager.popBackStack();
         } else {
-            // Lastly, it will rely on the system behavior for back
             super.onBackPressed();
         }
     }
@@ -136,23 +123,20 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void initializeToolbar() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         if (mToolbar == null) {
             throw new IllegalStateException("Layout is required to include a Toolbar with id " +
                     "'toolbar'");
         }
 
-//        mToolbar.inflateMenu(R.menu.main);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
         if (mDrawerLayout != null) {
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            NavigationView navigationView = findViewById(R.id.nav_view);
             if (navigationView == null) {
                 throw new IllegalStateException("Layout requires a NavigationView " +
                         "with id 'nav_view'");
             }
 
-            // Create an ActionBarDrawerToggle that will handle opening/closing of the drawer:
             mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                     mToolbar, R.string.open_content_drawer, R.string.close_content_drawer);
             mDrawerLayout.setDrawerListener(drawerListener);
