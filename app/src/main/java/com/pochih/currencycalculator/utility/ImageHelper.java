@@ -1,4 +1,4 @@
-package com.pochih.currencycalculator.tool;
+package com.pochih.currencycalculator.utility;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

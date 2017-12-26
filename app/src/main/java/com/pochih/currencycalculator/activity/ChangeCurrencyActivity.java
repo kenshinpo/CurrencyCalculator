@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -27,6 +26,10 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+/**
+ * Created by admin on 2017/12/20.
+ */
 
 public class ChangeCurrencyActivity extends AppCompatActivity {
     private static final String TAG = ChangeCurrencyActivity.class.getSimpleName();

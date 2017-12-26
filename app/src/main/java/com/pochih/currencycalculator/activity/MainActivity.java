@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,7 +20,7 @@ import com.pochih.currencycalculator.AppApplication;
 import com.pochih.currencycalculator.R;
 import com.pochih.currencycalculator.entity.Currency;
 import com.pochih.currencycalculator.entity.Exchange;
-import com.pochih.currencycalculator.tool.ImageHelper;
+import com.pochih.currencycalculator.utility.ImageHelper;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -34,6 +32,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+/**
+ * Created by PoChih on 2017/12/20.
+ */
 
 public class MainActivity extends AppCompatActivity {
 
